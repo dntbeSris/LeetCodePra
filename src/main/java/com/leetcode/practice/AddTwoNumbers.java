@@ -1,6 +1,8 @@
 package com.leetcode.practice;
 
 
+import com.leetcode.practice.base.ListNode;
+
 /**
  *给出两个 非空 的链表用来表示两个非负的整数。其中，它们各自的位数是按照 逆序 的方式存储的，并且它们的每个节点只能存储 一位 数字。
  *
@@ -24,63 +26,46 @@ public class AddTwoNumbers {
 
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
 
-        int temp = 0;
-
         ListNode head = null;
-
-        ListNode next = head;
-
-        while (l1 != null || l2 != null){
-
-            int num1 = 0;
-
+        ListNode next = null;
+        int last = 0;
+        while(l1 != null || l2 != null){
+            int v1 = 0,v2 = 0;
             if(l1 != null){
-                num1 = l1.val;
+                v1 = l1.val;
                 l1 = l1.next;
             }
-
-            int num2 = 0;
-
             if(l2 != null){
-                num2 = l2.val;
+                v2 = l2.val;
                 l2 = l2.next;
             }
-
-            int sum = num1 + num2 + temp;
-
-            if(sum >= 10){
-                sum -= 10;
-                temp = 1;
-            }else{
-                temp = 0;
-            }
+            int sum = v1 + v2 + last;
+            last = sum /10;
             if(head == null){
-                head = new ListNode(sum);
+                head = new ListNode(sum%10);
                 next = head;
             }else {
-                ListNode listNode = new ListNode(sum);
-                next.next = listNode;
-                next = listNode;
+                next.next = new ListNode(sum%10);
+                next = next.next;
             }
-
-            if(l1 == null && l2 == null && temp > 0){
-                ListNode listNode = new ListNode(temp);
-                next.next = listNode;
-                next = listNode;
-            }
-
         }
-
+        if(last != 0){
+            next.next = new ListNode(last);
+        }
         return head;
 
     }
 
+    public static void main(String[] args) {
+        ListNode listNode1 = new ListNode(2);
+        listNode1.next = new ListNode(4);
+        listNode1.next.next = new ListNode(3);
 
+        ListNode listNode2 = new ListNode(5);
+        listNode2.next = new ListNode(6);
+        listNode2.next.next = new ListNode(4);
 
-      public class ListNode {
-          int val;
-          ListNode next;
-          ListNode(int x) { val = x; }
-     }
+        new AddTwoNumbers().addTwoNumbers(listNode1,listNode2);
+    }
 
 }
